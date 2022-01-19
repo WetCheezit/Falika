@@ -1,8 +1,3 @@
---[[ 
-    https://github.com/VoidMasterX | siper#9938. 
-    Slightly modified settings table for simplification 
-]]--
-
 local module = {
     drawingcache = {},
     cache = {},
