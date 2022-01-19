@@ -36,7 +36,7 @@ local module = {
 }
 
 -- Libraries
-local Math = loadstring(game:HttpGet("https://raw.githubusercontent.com/iRay888/Ray/main/Math"))()
+local Math = loadstring(game:HttpGet("https://raw.githubusercontent.com/WetCheezit/Falika/main/Modules/Math.lua"))()
 
 -- Services
 local Players = game:GetService("Players")
