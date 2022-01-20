@@ -6,7 +6,9 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/WetCheezit/Falika/mai
 
 # Games
 
-- Universal (Aimbot, Esp)
+- Universal
+  - Aimbot
+  - Esp
 - Arsenal
 - Bad Business
 - Counter Blox
