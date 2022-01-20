@@ -10,7 +10,15 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/WetCheezit/Falika/mai
 Synapse X
 Krnl
 ```
-
+# Credits
+  - [Siper](https://v3rmillion.net/member.php?action=profile&uid=746442)
+    - Owner
+    - UI Creator
+    - Scripter
+  - [WetCheezit](https://v3rmillion.net/member.php?action=profile&uid=1786283)
+    - Owner
+    - Scripter
+  - Thread (Later)
 
 # Games
 
