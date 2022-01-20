@@ -5,7 +5,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/WetCheezit/Falika/mai
 ```
 
 # Information
-Supported Executors
+**Supported Executors**
 ```
 Synapse X
 Krnl
