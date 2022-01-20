@@ -11,14 +11,14 @@ Synapse X
 Krnl
 ```
 # Credits
-  - [Siper](https://v3rmillion.net/member.php?action=profile&uid=746442)
-    - Owner
-    - UI Creator
-    - Scripter
-  - [WetCheezit](https://v3rmillion.net/member.php?action=profile&uid=1786283)
-    - Owner
-    - Scripter
-  - Thread (Later)
+[Siper](https://v3rmillion.net/member.php?action=profile&uid=746442)
+  - Owner
+  - UI Creator
+  - Scripter
+[WetCheezit](https://v3rmillion.net/member.php?action=profile&uid=1786283)
+  - Owner
+  - Scripter
+Thread (Later)
 
 # Games
 
