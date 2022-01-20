@@ -6,16 +6,16 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/WetCheezit/Falika/mai
 
 # Games
 
-Universal (Aimbot, Esp)
-Arsenal
-Bad Business
-Counter Blox
-Energy Assault
-Jailbird
-Murder Mystery 2
-No-Scope Arcade
-Phantom Forces
-Project Lazarus
-Robeats
-Sound Space
-Zombies Uprising
+- Universal (Aimbot, Esp)
+- Arsenal
+- Bad Business
+- Counter Blox
+- Energy Assault
+- Jailbird
+- Murder Mystery 2
+- No-Scope Arcade
+- Phantom Forces
+- Project Lazarus
+- Robeats
+- Sound Space
+- Zombies Uprising
