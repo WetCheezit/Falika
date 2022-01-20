@@ -5,11 +5,12 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/WetCheezit/Falika/mai
 ```
 
 # Information
-**Supported Executors**
+**Supported Executors** (If any other executors work, please join our discord or dm WetCheezit#4345 and I will add it to this list
 ```
 Synapse X
 Krnl
 ```
+
 
 # Games
 
