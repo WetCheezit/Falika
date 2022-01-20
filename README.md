@@ -15,9 +15,11 @@ Krnl
   - Owner
   - UI Creator
   - Scripter
+
 [WetCheezit](https://v3rmillion.net/member.php?action=profile&uid=1786283)
   - Owner
   - Scripter
+
 Thread (Later)
 
 # Games
