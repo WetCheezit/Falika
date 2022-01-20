@@ -1,7 +1,7 @@
 # Loadstring
 
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/WetCheezit/Falika/main/Main/Loader.lua"))(1629202361)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/WetCheezit/Falika/main/Main/Loader.lua"))()
 ```
 
 # Games
