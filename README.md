@@ -10,7 +10,27 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/WetCheezit/Falika/mai
   - Aimbot
   - Esp
 - Arsenal
+  - Silent Aim
+  - Aimbot
+  - Gun Mods
+  - Movement
+  - Esp
 - Bad Business
+  - Silent Aim
+    - Miss Percentage
+    - Hitbox
+    - Fov
+  - Aimbot
+    - Hitbox
+    - Fov
+    - Smoothing
+  - Movement
+    - Click Teleport
+    - Fly
+    - Walkspeed
+  - Gun Mods
+    - No Recoil
+    - No Spread
 - Counter Blox
 - Energy Assault
 - Jailbird
