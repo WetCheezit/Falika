@@ -4,6 +4,13 @@
 loadstring(game:HttpGet("https://raw.githubusercontent.com/WetCheezit/Falika/main/Main/Loader.lua"))()
 ```
 
+# Information
+Supported Executors
+```
+Synapse X
+Krnl
+```
+
 # Games
 
 - Universal
