@@ -18,6 +18,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/WetCheezit/Falika/mai
     - Healthbars 
     - Font
     - Text Size
+
 - Arsenal
   - Silent Aim
     - Miss Percentage
@@ -37,6 +38,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/WetCheezit/Falika/mai
     - Fly
   - Esp
     - Same As Universal
+
 - Bad Business
   - Silent Aim
     - Miss Percentage
@@ -56,13 +58,23 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/WetCheezit/Falika/mai
     - No Spread
   - Esp
     - Same As Universal
+
 - Counter Blox
+
 - Energy Assault
+
 - Jailbird
+
 - Murder Mystery 2
+
 - No-Scope Arcade
+
 - Phantom Forces
+
 - Project Lazarus
+
 - Robeats
+
 - Sound Space
+
 - Zombies Uprising
