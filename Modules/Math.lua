@@ -3,8 +3,13 @@ local Math = {
     raycast = workspace.FindPartOnRayWithIgnoreList,
     wraycast = workspace.FindPartOnRayWithWhitelist,
     dot = Vector3.new().Dot,
-    v3 = Vector3.new()
+    v3 = Vector3.new(),
 }
+
+function Math.wtvp(p)
+    p = workspace.CurrentCamera:WorldToViewportPoint(p)
+    return Vector2.new(p.X, p.Y), p.Z
+end
 
 local function bulletcheck(o, t, p)
     if p <= 0.01 then
