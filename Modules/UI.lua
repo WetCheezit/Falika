@@ -2,6 +2,7 @@ local CoreGui = game:GetService("CoreGui")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
 local UserInputService = game:GetService("UserInputService")
 local Mouse = Players.LocalPlayer:GetMouse()
 
@@ -11,6 +12,7 @@ end
 
 local UILibrary = {
     flags = {},
+    options = {},
     connections = {},
     dragging = false,
     sliderdragging = false,
@@ -62,6 +64,33 @@ function UILibrary:Dragger(Object)
             }):Play()
         end
     end)
+end
+
+function UILibrary:LoadConfig(Path)
+    if (isfile(Path)) then
+        local Config = HttpService:JSONDecode(readfile(Path))
+
+        if (Config) then
+            for i,v in pairs(Config) do
+                local Option = self.options[i]
+                if (type(v) == "boolean") then
+                    Option:SetState(v)
+                elseif (type(v) == "string" or type(v) == "number") then
+                    if (Option.SetText) then
+                        Option:SetText(v)
+                    elseif (Option.SetValue) then
+                        Option:SetValue(v)
+                    end
+                elseif (typeof(v) == "Color3") then
+                    Option:SetColor(v)
+                end
+            end
+        end
+    end
+end
+
+function UILibrary:SaveConfig(Path)
+    writefile(Path, HttpService:JSONEncode(self.flags))
 end
 
 function UILibrary:Unload()
@@ -364,6 +393,14 @@ function UILibrary:CreateWindow(Name, Color)
                     Options.state = State
                     UILibrary.flags[Options.flag] = Options.state
                     Options.callback(Options.state)
+
+                    TweenService:Create(ToggleCheck, TweenInfo.new(0.200), {
+                        ImageColor3 = Options.state and Color or Color3.fromRGB(243, 97, 109)
+                    }):Play()
+
+                    ToggleCheck.Image = Options.state and "rbxassetid://1202200114" or "rbxassetid://3926305904"
+                    ToggleCheck.ImageRectOffset = Options.state and Vector2.new() or Vector2.new(924, 724)
+                    ToggleCheck.ImageRectSize = Options.state and Vector2.new() or Vector2.new(36, 36)
                 end
             end
 
@@ -372,6 +409,8 @@ function UILibrary:CreateWindow(Name, Color)
             end
 
             ToggleTypes:SetState(Options.state)
+
+            UILibrary.options[Options.flag] = ToggleTypes
 
             return ToggleTypes
         end
@@ -585,6 +624,8 @@ function UILibrary:CreateWindow(Name, Color)
             end
 
             SliderTypes:SetValue(DefaultValue)
+
+            UILibrary.options[Options.flag] = SliderTypes
 
             return SliderTypes
         end
@@ -804,6 +845,8 @@ function UILibrary:CreateWindow(Name, Color)
             end
 
             DropdownTypes:SetValue(Options.value)
+
+            UILibrary.options[Options.flag] = DropdownTypes
 
             return DropdownTypes
         end
@@ -1194,6 +1237,8 @@ function UILibrary:CreateWindow(Name, Color)
 
             ColorpickerTypes:SetColor(Options.color)
 
+            UILibrary.options[Options.flag] = ColorpickerTypes
+
             return ColorpickerTypes
         end
 
@@ -1321,6 +1366,8 @@ function UILibrary:CreateWindow(Name, Color)
                 end
             end
 
+            UILibrary.options[Options.flag] = KeybindTypes
+
             return KeybindTypes
         end
 
@@ -1397,6 +1444,8 @@ function UILibrary:CreateWindow(Name, Color)
             end
 
             TextboxTypes:SetText(Options.value, TextboxText.Text)
+
+            UILibrary.options[Options.flag] = TextboxTypes
 
             return TextboxTypes
         end
@@ -1503,4 +1552,19 @@ function UILibrary:CreateWindow(Name, Color)
     return WinTypes, Falika
 end
 
-return UILibrary
+local Window = UILibrary:CreateWindow("Arsenal")
+local Tab = Window:CreateTab("Settings")
+
+Tab:CreateToggle({text = "E", flag = "wowie"})
+Tab:CreateSlider({text = "W", flag = "wow"})
+Tab:CreateDropdown({text = "H", values = {"A","B"}, flag = "gu"})
+
+writefile("wow.txt", "")
+
+Tab:CreateButton({text = "Load Config", callback = function()
+    UILibrary:LoadConfig("wow.txt")
+end})
+
+Tab:CreateButton({text = "Save Config", callback = function()
+    UILibrary:SaveConfig("wow.txt")
+end})
