@@ -779,7 +779,7 @@ function UILibrary:CreateWindow(Name, Color)
                 end
 
                 DropdownContainer.Visible = not DropdownContainer.Visible
-                Dropdown.ZIndex = DropdownContainer.Visible and 4 or 1
+                Dropdown.ZIndex = DropdownContainer.Visible and 99 or 1
 
                 for i,v in pairs(DropdownContainer:GetChildren()) do
                     if (v.Name == "DropdownItem") then
@@ -1552,19 +1552,4 @@ function UILibrary:CreateWindow(Name, Color)
     return WinTypes, Falika
 end
 
-local Window = UILibrary:CreateWindow("Arsenal")
-local Tab = Window:CreateTab("Settings")
-
-Tab:CreateToggle({text = "E", flag = "wowie"})
-Tab:CreateSlider({text = "W", flag = "wow"})
-Tab:CreateDropdown({text = "H", values = {"A","B"}, flag = "gu"})
-
-writefile("wow.txt", "")
-
-Tab:CreateButton({text = "Load Config", callback = function()
-    UILibrary:LoadConfig("wow.txt")
-end})
-
-Tab:CreateButton({text = "Save Config", callback = function()
-    UILibrary:SaveConfig("wow.txt")
-end})
+return UILibrary
