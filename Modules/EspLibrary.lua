@@ -223,7 +223,7 @@ function module:AddEsp(Player)
                 elseif (Origin == "Left") then
                     Target = Vector2.new(0, Target.Y)
                 elseif (Origin == "Right") then
-                    Target = Vector2.new(ViewportSize.X, Taget.Y)
+                    Target = Vector2.new(ViewportSize.X, Target.Y)
                 elseif (Origin == "Mouse") then
                     Target = Vector2.new(Mouse.X, Mouse.Y + 36)
                 end
