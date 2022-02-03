@@ -261,7 +261,7 @@ function module:RemoveEsp(Player)
 end
 
 function module:GetCharacter(Player)
-    return Player.Character, Player.Character and Player.Character:WaitForChild("HumanoidRootPart")
+    return Player.Character, Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
 end
 
 function module:GetBoundingBox(Character)
