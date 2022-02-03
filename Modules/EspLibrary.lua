@@ -280,7 +280,7 @@ end
 
 function module:GetHealth(Player)
     local Character = self:GetCharacter(Player)
-    local Humanoid = Character and Character:WaitForChild("Humanoid")
+    local Humanoid = Character and Character:FindFirstChild("Humanoid")
 
     return Humanoid and Humanoid.Health, Humanoid and Humanoid.MaxHealth
 end
