@@ -63,9 +63,7 @@ Thread (Later)
     - Hitbox
     - Fov
   - Aimbot
-    - Hitbox
-    - Fov
-    - Smoothing
+    - Same As Universal
   - Movement
     - Click Teleport
     - Fly
