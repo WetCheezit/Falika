@@ -131,120 +131,6 @@ function module:AddEsp(Player)
         Thickness = 1
     })
 
-    local CanRun = true
-
-    RunService:BindToRenderStep(Player.Name .. "Esp", 1, function()
-        if (not CanRun) then
-            return
-        end
-
-        CanRun = false
-
-        local Character, Root = self:GetCharacter(Player)
-
-        if (Character and Root) then
-            local Health, MaxHealth = self:GetHealth(Player)
-            local _, OnScreen = CurrentCamera:WorldToViewportPoint(Root.Position)
-            local Magnitude = (Root.Position - CurrentCamera.CFrame.p).Magnitude
-            local CanShow = OnScreen and self.settings.enabled
-
-            if (self.settings.limitdistance and Magnitude > self.settings.maxdistance) then
-                CanShow = false
-            end
-
-            if (self.settings.teamcheck and not self:CheckTeam(Player)) then
-                CanShow = false
-            end
-
-            if (Health < 1) then
-                CanShow = false
-            end
-
-            if (CanShow) then
-                local Data = self:GetBoundingBox(Character)
-                local Width, Height = math.floor(Data.Positions.TopLeft.X - Data.Positions.TopRight.X), math.floor(Data.Positions.TopLeft.Y - Data.Positions.BottomLeft.Y)
-                local BoxSize = Vector2.new(Width, Height)
-                local BoxPosition = Vector2.new(math.floor(Data.Positions.BottomRight.X), math.floor(Data.Positions.BottomRight.Y))
-                local HealthbarSize = Vector2.new(2, math.floor(BoxSize.Y * (Health / MaxHealth)))
-                local HealthbarPosition = Vector2.new(math.floor(Data.Positions.TopLeft.X - ((4 + self.settings.healthbarsoffset) + (self.settings.outlines and 1 or 0))), math.floor(Data.Positions.BottomLeft.Y))
-                local ViewportSize = CurrentCamera.ViewportSize
-
-                Retainer.nameobject.Visible = self.settings.names
-                Retainer.nameobject.Outline = self.settings.outlines
-                Retainer.nameobject.Size = self.settings.textsize
-                Retainer.nameobject.Font = self.settings.textfont
-                Retainer.nameobject.Color = self:ParseColor(self.settings.namescolor, Player)
-                Retainer.nameobject.Position = Vector2.new(Data.Positions.Middle.X, (Data.Positions.TopLeft.Y - 15) + self.settings.textoffset)
-
-                Retainer.distanceobject.Visible = self.settings.distance
-                Retainer.distanceobject.Outline = self.settings.outlines
-                Retainer.distanceobject.Text = math.floor(Magnitude) .. " Studs"
-                Retainer.distanceobject.Size = self.settings.textsize
-                Retainer.distanceobject.Font = self.settings.textfont
-                Retainer.distanceobject.Color = self:ParseColor(self.settings.distancecolor, Player)
-                Retainer.distanceobject.Position = Vector2.new(Data.Positions.Middle.X, (Data.Positions.BottomLeft.Y + 3) + self.settings.textoffset)
-
-                Retainer.boxobject.Visible = self.settings.boxes
-                Retainer.boxobject.Color = self:ParseColor(self.settings.boxescolor, Player)
-                Retainer.boxoutlineobject.Visible = self.settings.boxes and self.settings.outlines
-                Retainer.boxfillobject.Color = self:ParseColor(self.settings.boxesfillcolor, Player)
-                Retainer.boxfillobject.Transparency = self.settings.boxesfilltrans
-                Retainer.boxfillobject.Visible = self.settings.boxes and self.settings.boxesfill
-
-                Retainer.boxobject.Size = BoxSize
-                Retainer.boxobject.Position = BoxPosition
-
-                Retainer.boxoutlineobject.Size = BoxSize
-                Retainer.boxoutlineobject.Position = BoxPosition
-
-                Retainer.boxfillobject.Size = BoxSize
-                Retainer.boxfillobject.Position = BoxPosition
-
-                Retainer.healthbarobject.Visible = self.settings.healthbars
-                Retainer.healthbarobject.Color = self:ParseColor(self.settings.healthbarscolor, Player)
-                Retainer.healthbaroutlineobject.Visible = self.settings.healthbars and self.settings.outlines
-
-                Retainer.healthbarobject.Size = HealthbarSize
-                Retainer.healthbarobject.Position = HealthbarPosition
-
-                Retainer.healthbaroutlineobject.Size = Vector2.new(HealthbarSize.X, BoxSize.Y)
-                Retainer.healthbaroutlineobject.Position = HealthbarPosition
-
-                Retainer.tracerobject.Visible = self.settings.tracers
-                Retainer.tracerobject.Color = self:ParseColor(self.settings.tracerscolor, Player)
-                Retainer.tracerobject.To = Data.Positions.Middle
-
-                local Origin, Target = self.settings.tracersorigin, Vector2.new(ViewportSize.X / 2, ViewportSize.Y / 2)
-
-                if (Origin == "Top") then
-                    Target = Vector2.new(Target.X, 0)
-                elseif (Origin == "Bottom") then
-                    Target = Vector2.new(Target.X, ViewportSize.Y)
-                elseif (Origin == "Left") then
-                    Target = Vector2.new(0, Target.Y)
-                elseif (Origin == "Right") then
-                    Target = Vector2.new(ViewportSize.X, Target.Y)
-                elseif (Origin == "Mouse") then
-                    Target = Vector2.new(Mouse.X, Mouse.Y + 36)
-                end
-
-                Retainer.tracerobject.From = Target
-            else
-                for i,v in pairs(Retainer) do
-                    v.Visible = false
-                end
-            end
-        else
-            for i,v in pairs(Retainer) do
-                v.Visible = false
-            end
-        end
-
-        task.wait(math.clamp(self.settings.refreshrate / 1000, 0, 9e9))
-
-        CanRun = true
-    end)
-
     self.cache[Player] = Retainer
 end
 
@@ -252,16 +138,16 @@ function module:RemoveEsp(Player)
     local Data = self.cache[Player]
 
     if (Data) then
-        RunService:UnbindFromRenderStep(Player.Name .. "Esp")
-
         for _, Object in pairs(Data) do
             Object:Remove()
         end
+
+        self.cache[Player] = nil
     end
 end
 
 function module:GetCharacter(Player)
-    return Player.Character, Player.Character and Player.Character:FindFirstChild("HumanoidRootPart")
+    return Player.Character, Player.Character and Player.Character:WaitForChild("HumanoidRootPart")
 end
 
 function module:GetBoundingBox(Character)
@@ -280,7 +166,7 @@ end
 
 function module:GetHealth(Player)
     local Character = self:GetCharacter(Player)
-    local Humanoid = Character and Character:FindFirstChild("Humanoid")
+    local Humanoid = Character and Character:WaitForChild("Humanoid")
 
     return Humanoid and Humanoid.Health, Humanoid and Humanoid.MaxHealth
 end
@@ -308,7 +194,123 @@ function module:Init()
     end)
 
     Players.PlayerRemoving:Connect(function(Player)
-        self:AddEsp(Player)
+        self:RemoveEsp(Player)
+    end)
+
+    local CanRun = true
+
+    RunService:BindToRenderStep("Esp_Main", 1, function()
+        if (not CanRun) then
+            return
+        end
+
+        CanRun = false
+
+        for Player, Retainer in pairs(self.cache) do
+            local Character, Root = self:GetCharacter(Player)
+
+            if (Character and Root) then
+                local Health, MaxHealth = self:GetHealth(Player)
+                local _, OnScreen = CurrentCamera:WorldToViewportPoint(Root.Position)
+                local Magnitude = (Root.Position - CurrentCamera.CFrame.p).Magnitude
+                local CanShow = OnScreen and self.settings.enabled
+
+                if (self.settings.limitdistance and Magnitude > self.settings.maxdistance) then
+                    CanShow = false
+                end
+
+                if (self.settings.teamcheck and not self:CheckTeam(Player)) then
+                    CanShow = false
+                end
+
+                if (Health < 1) then
+                    CanShow = false
+                end
+
+                if (CanShow) then
+                    local Data = self:GetBoundingBox(Character)
+                    local Width, Height = math.floor(Data.Positions.TopLeft.X - Data.Positions.TopRight.X), math.floor(Data.Positions.TopLeft.Y - Data.Positions.BottomLeft.Y)
+                    local BoxSize = Vector2.new(Width, Height)
+                    local BoxPosition = Vector2.new(math.floor(Data.Positions.BottomRight.X), math.floor(Data.Positions.BottomRight.Y))
+                    local HealthbarSize = Vector2.new(2, math.floor(BoxSize.Y * (Health / MaxHealth)))
+                    local HealthbarPosition = Vector2.new(math.floor(Data.Positions.TopLeft.X - ((4 + self.settings.healthbarsoffset) + (self.settings.outlines and 1 or 0))), math.floor(Data.Positions.BottomLeft.Y))
+                    local ViewportSize = CurrentCamera.ViewportSize
+
+                    Retainer.nameobject.Visible = self.settings.names
+                    Retainer.nameobject.Outline = self.settings.outlines
+                    Retainer.nameobject.Size = self.settings.textsize
+                    Retainer.nameobject.Font = self.settings.textfont
+                    Retainer.nameobject.Color = self:ParseColor(self.settings.namescolor, Player)
+                    Retainer.nameobject.Position = Vector2.new(Data.Positions.Middle.X, (Data.Positions.TopLeft.Y - 15) + self.settings.textoffset)
+
+                    Retainer.distanceobject.Visible = self.settings.distance
+                    Retainer.distanceobject.Outline = self.settings.outlines
+                    Retainer.distanceobject.Text = math.floor(Magnitude) .. " Studs"
+                    Retainer.distanceobject.Size = self.settings.textsize
+                    Retainer.distanceobject.Font = self.settings.textfont
+                    Retainer.distanceobject.Color = self:ParseColor(self.settings.distancecolor, Player)
+                    Retainer.distanceobject.Position = Vector2.new(Data.Positions.Middle.X, (Data.Positions.BottomLeft.Y + 3) + self.settings.textoffset)
+
+                    Retainer.boxobject.Visible = self.settings.boxes
+                    Retainer.boxobject.Color = self:ParseColor(self.settings.boxescolor, Player)
+                    Retainer.boxoutlineobject.Visible = self.settings.boxes and self.settings.outlines
+                    Retainer.boxfillobject.Color = self:ParseColor(self.settings.boxesfillcolor, Player)
+                    Retainer.boxfillobject.Transparency = self.settings.boxesfilltrans
+                    Retainer.boxfillobject.Visible = self.settings.boxes and self.settings.boxesfill
+
+                    Retainer.boxobject.Size = BoxSize
+                    Retainer.boxobject.Position = BoxPosition
+
+                    Retainer.boxoutlineobject.Size = BoxSize
+                    Retainer.boxoutlineobject.Position = BoxPosition
+
+                    Retainer.boxfillobject.Size = BoxSize
+                    Retainer.boxfillobject.Position = BoxPosition
+
+                    Retainer.healthbarobject.Visible = self.settings.healthbars
+                    Retainer.healthbarobject.Color = self:ParseColor(self.settings.healthbarscolor, Player)
+                    Retainer.healthbaroutlineobject.Visible = self.settings.healthbars and self.settings.outlines
+
+                    Retainer.healthbarobject.Size = HealthbarSize
+                    Retainer.healthbarobject.Position = HealthbarPosition
+
+                    Retainer.healthbaroutlineobject.Size = Vector2.new(HealthbarSize.X, BoxSize.Y)
+                    Retainer.healthbaroutlineobject.Position = HealthbarPosition
+
+                    Retainer.tracerobject.Visible = self.settings.tracers
+                    Retainer.tracerobject.Color = self:ParseColor(self.settings.tracerscolor, Player)
+                    Retainer.tracerobject.To = Data.Positions.Middle
+
+                    local Origin, Target = self.settings.tracersorigin, Vector2.new(ViewportSize.X / 2, ViewportSize.Y / 2)
+
+                    if (Origin == "Top") then
+                        Target = Vector2.new(Target.X, 0)
+                    elseif (Origin == "Bottom") then
+                        Target = Vector2.new(Target.X, ViewportSize.Y)
+                    elseif (Origin == "Left") then
+                        Target = Vector2.new(0, Target.Y)
+                    elseif (Origin == "Right") then
+                        Target = Vector2.new(ViewportSize.X, Target.Y)
+                    elseif (Origin == "Mouse") then
+                        Target = Vector2.new(Mouse.X, Mouse.Y + 36)
+                    end
+
+                    Retainer.tracerobject.From = Target
+                else
+                    for i,v in pairs(Retainer) do
+                        v.Visible = false
+                    end
+                end
+            else
+                for i,v in pairs(Retainer) do
+                    v.Visible = false
+                end
+            end
+        end
+
+        task.wait(math.clamp(self.settings.refreshrate / 1000, 0, 9e9))
+
+        CanRun = true
     end)
 end
 
