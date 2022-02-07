@@ -156,7 +156,7 @@ function module:AddEsp(Player)
                 CanShow = false
             end
 
-            if (Health <= 0) then
+            if (Health < 1) then
                 CanShow = false
             end
 
